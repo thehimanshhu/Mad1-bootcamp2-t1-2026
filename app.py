@@ -8,6 +8,7 @@ def create_app():
     
     return app
 
+print("hello world")
 app = create_app()
 
 from application.routes import *
