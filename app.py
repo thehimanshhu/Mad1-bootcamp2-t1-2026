@@ -2,15 +2,16 @@ from flask import Flask, render_template
 from application.model import db
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__ )
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///mydb.sqlite3"    
     db.init_app(app)
-    
+    app.app_context().push()
     return app
 
 print("hello world")
 app = create_app()
 
+from application.initial_data import *
 from application.routes import *
 
 
