@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Helpify</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse " id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Search</a>
+                    </li>
+                    <li class="nav-item">
+
+                        <div class="dropdown">
+                            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="bi bi-person-circle fs-5"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#">LogOut</a></li>
+
+                            </ul>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="card ms-4 mt-4 me-4">
+        <div class="card-body">
+            <h5 class="card-title">Package Details</h5>
+            <p class="card-text"><strong>Name:</strong> Pack1</p>
+            <p class="card-text"><strong>Description:</strong> This is a sample package.</p>
+        </div>
+    </div>
+
+    <div class="card mt-4 ms-4 me-4 shadow-lg">
+        <div class="card-header">
+            <h3>Bookings</h3>
+        </div>
+        <div class="card-body">
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-approved-bookings-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-approved-bookings" type="button" role="tab"
+                        aria-controls="pills-approved-bookings" aria-selected="true">Approved</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-pending-bookings-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-pending-bookings" type="button" role="tab"
+                        aria-controls="pills-pending-bookings" aria-selected="false">Pending </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-completed-rejected-tab" data-bs-toggle="pill"
+                        data-bs-target="#pills-completed-rejected" type="button" role="tab"
+                        aria-controls="pills-completed-rejected" aria-selected="false">Completed/Rejected</button>
+                </li>
+
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-approved-bookings" role="tabpanel"
+                    aria-labelledby="pills-approved-bookings-tab" tabindex="0">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Customer Name</th>
+                                <th scope="col">Professional Name</th>
+                                <th scope="col">customer email</th>
+                                <th scope="col">customer mobile</th>
+                                <th scope="col">Status</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Josh</td>
+                                <td>Mark</td>
+                                <td>josh@example.com</td>
+                                <td>123-456-7890</td>
+                                <td><span class="badge bg-success">Approved</span></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+                <div class="tab-pane fade" id="pills-pending-bookings" role="tabpanel"
+                    aria-labelledby="pills-pending-bookings-tab" tabindex="0">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Customer Name</th>
+                                <th scope="col">Professional Name</th>
+                                <th scope="col">customer email</th>
+                                <th scope="col">customer mobile</th>
+                                <th scope="col">Status</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Josh</td>
+                                <td>Mark</td>
+                                <td>josh@example.com</td>
+                                <td>123-456-7890</td>
+                                <td><span class="badge bg-success">Approved</span></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+                <div class="tab-pane fade" id="pills-completed-rejected" role="tabpanel"
+                    aria-labelledby="pills-completed-rejected-tab" tabindex="0">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Customer Name</th>
+                                <th scope="col">Professional Name</th>
+                                <th scope="col">customer email</th>
+                                <th scope="col">customer mobile</th>
+                                <th scope="col">Status</th>
+                            
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Josh</td>
+                                <td>Mark</td>
+                                <td>josh@example.com</td>
+                                <td>123-456-7890</td>
+                                <td><span class="badge bg-success">Approved</span></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
