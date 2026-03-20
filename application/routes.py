@@ -1,12 +1,143 @@
 from app  import app
-from .model import db 
+from .model import db  , Admin, Customer,Professional,Package,Booking
 
-from flask import render_template
+from flask import render_template , request ,redirect
 
 @app.route("/")
 def home():
     return render_template("home.html")
 
-@app.route("/login")
+@app.route("/register/<string:utype>" , methods=["GET" , "POST"])
+def register(utype):
+    if request.method =="GET":
+        if utype == "professional":
+            return render_template("professional/register.html")
+        elif utype=="customer":
+            return render_template("customer/register.html")
+        else:
+            return "not a valid url"
+    elif request.method =="POST":
+        if utype=="customer":
+            email = request.form.get("cust_email")
+            password= request.form.get("cust_password")
+            name = request.form.get("cust_name")
+            mobile = request.form.get("cust_mobile")
+            address = request.form.get("cust_address")
+            if not email or not password or not name or not mobile or not address :
+                return "please fill the form properly"
+            
+            user = db.session.query(Professional).filter_by(email=email).first() or \
+                 db.session.query(Customer).filter_by(email=email).first() or\
+                 db.session.query(Admin).filter_by(email=email).first()
+            if user:
+                return '''
+                        <h1>User already exist</h1>
+                        <a href="/login" >Go to login </a>
+                        '''
+        
+            new_user= Customer(name=name , email=email , password=password , mobile=mobile , address=address)
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect("/login")
+
+        if utype=="professional":
+            email = request.form.get("prof_email")
+            password= request.form.get("prof_password")
+            name = request.form.get("prof_name")
+            mobile = request.form.get("prof_mobile")
+            address = request.form.get("prof_address")
+            if not email or not password or not name or not mobile or not address :
+                return "please fill the form properly"
+            
+            user = db.session.query(Professional).filter_by(email=email).first() or \
+                 db.session.query(Customer).filter_by(email=email).first() or\
+                 db.session.query(Admin).filter_by(email=email).first()
+            if user:
+                return '''
+                        <h1>User already exist</h1>
+                        <a href="/login" >Go to login </a>
+                        '''
+        
+            new_user= Professional(name=name , email=email , password=password , mobile=mobile , address=address , status="Registered" , resume="default_resume.pdf")
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect("/login")
+
+
+@app.route("/login", methods=["GET" , "POST"])
 def login():
-    return render_template("login.html")
+    if request.method =="GET":
+        return render_template("login.html")
+    elif request.method =="POST":
+        email=request.form.get("email")
+        password = request.form.get("password")
+        user = db.session.query(Professional).filter_by(email=email).first() or \
+                 db.session.query(Customer).filter_by(email=email).first() or\
+                 db.session.query(Admin).filter_by(email=email).first()
+        if  isinstance(user,Professional):
+            if user.password == password:
+                return redirect(f"/professional/dashboard/{user.id}")
+        elif isinstance(user,Customer):
+            if user.password == password:
+                return redirect(f"/customer/dashboard/{user.id}")
+        elif isinstance(user,Admin):
+            if user.password == password:
+                return redirect("/admin/dashboard") 
+
+
+
+
+# @app.route("/login", methods=["GET" , "POST"])
+# def login():
+#     if request.method =="GET":
+#         return render_template("login.html")
+#     elif request.method =="POST":
+#         email=request.form.get("email")
+#         password = request.form.get("password")
+#         role = request.form.get("role")
+
+#         if role=="admin":
+#             adm = db.session.query(Admin).filter_by(email=email).first()
+#             if adm :
+#                 if adm.password==password :
+#                     return redirect("/admin/dashboard")
+#                 else:
+#                     return "invalid password"
+#             else:
+#                 return ("user not found")
+#         elif role=="prof":
+#             prof = db.session.query(Professional).filter_by(email=email).first()
+#             if adm :
+#                 if adm.password==password :
+#                     return redirect("/professional/dashboard")
+#                 else:
+#                     return "invalid password"
+#             else:
+#                 return ("user not found")
+
+
+
+@app.route("/admin/dashboard" , methods=["GET","POST"]) 
+def admin_dashboard():
+    return "welcome to admin dashbaord"
+
+@app.route("/customer/dashboard/<string:username>" , methods=["GET","POST"]) 
+def customer_dashboard(username):
+    return f"welcome {username}  to customer dashbaord" 
+
+
+@app.route("/professional/dashboard/<int:userid>" , methods=["GET","POST"]) 
+def professional_dashboard(userid):
+    p = db.session.query(Professional).filter_by(id = userid).first()
+    packages=db.session.query(Package).filter_by(prof_id =userid ).all()
+    print(packages)
+    # packages = p.packages
+    # print(packages)
+
+    return render_template("professional/dashboard.html" ,name = p.name ,id = p.id)
+
+
+@app.route("/professional/search/<int:userid>" , methods=["GET" ,"POST"]) 
+def prof_search(userid):
+    p = db.session.query(Professional).filter_by(id = userid).first()
+    return f"email : {p.email}   "
