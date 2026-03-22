@@ -1,7 +1,9 @@
 from app  import app
 from .model import db  , Admin, Customer,Professional,Package,Booking
 
-from flask import render_template , request ,redirect
+from flask_login import login_user , login_required , current_user
+
+from flask import render_template , request ,redirect 
 
 @app.route("/")
 def home():
@@ -76,12 +78,15 @@ def login():
                  db.session.query(Admin).filter_by(email=email).first()
         if  isinstance(user,Professional):
             if user.password == password:
-                return redirect(f"/professional/dashboard/{user.id}")
+                login_user(user)
+                return redirect(f"/professional/dashboard")
         elif isinstance(user,Customer):
             if user.password == password:
-                return redirect(f"/customer/dashboard/{user.id}")
+                login_user(user)
+                return redirect(f"/customer/dashboard")
         elif isinstance(user,Admin):
             if user.password == password:
+                login_user(user)
                 return redirect("/admin/dashboard") 
 
 
@@ -118,26 +123,40 @@ def login():
 
 
 @app.route("/admin/dashboard" , methods=["GET","POST"]) 
+@login_required
 def admin_dashboard():
-    return "welcome to admin dashbaord"
 
-@app.route("/customer/dashboard/<string:username>" , methods=["GET","POST"]) 
-def customer_dashboard(username):
-    return f"welcome {username}  to customer dashbaord" 
-
-
-@app.route("/professional/dashboard/<int:userid>" , methods=["GET","POST"]) 
-def professional_dashboard(userid):
-    p = db.session.query(Professional).filter_by(id = userid).first()
-    packages=db.session.query(Package).filter_by(prof_id =userid ).all()
-    print(packages)
-    # packages = p.packages
-    # print(packages)
-
-    return render_template("professional/dashboard.html" ,name = p.name ,id = p.id)
+    profs = db.session.query(Professional).all()
+    custs=db.session.query(Customer).all()
+    return render_template("admin/dashboard.html" , professionals=profs , customers=custs)
 
 
-@app.route("/professional/search/<int:userid>" , methods=["GET" ,"POST"]) 
-def prof_search(userid):
-    p = db.session.query(Professional).filter_by(id = userid).first()
-    return f"email : {p.email}   "
+@app.route("/customer/dashboard" , methods=["GET","POST"]) 
+@login_required
+def customer_dashboard():
+    return f"welcome {current_user.email} to customer dashbaord" 
+
+
+@app.route("/professional/dashboard" , methods=["GET","POST"]) 
+@login_required
+def professional_dashboard():
+    
+    return render_template("professional/dashboard.html" , current_user=current_user)
+
+
+@app.route("/professional/search" , methods=["GET" ,"POST"]) 
+@login_required
+def prof_search():
+    return render_template("professional/search.html")
+
+
+@app.route("/view-professional/<int:id>" , methods=["GET" , "POST"])
+@login_required
+def view_professional(id):
+    prof = db.session.query(Professional).filter_by(id = id).first()
+    packages = prof.packages
+    return render_template( "/admin/view-professional.html" , prof = prof , packages = packages)
+
+
+
+

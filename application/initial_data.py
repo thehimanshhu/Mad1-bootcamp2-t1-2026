@@ -28,7 +28,7 @@ with app.app_context():
         db.session.commit()
     
     # prof = db.session.query(Professional).filter_by(id= 2).first()
-
+    
 
     # print("all packages of the professional 1 : " , prof.packages[0].title )
 

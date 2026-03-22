@@ -83,16 +83,20 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% for prof in professionals %}
+                             {% if prof.status == 'Active' %}
                             <tr>
-                                <td>Mark</td>
-                                <td>mark@example.com</td>
-                                <td>123-456-7890</td>
-                                <td><span class="badge bg-success">Active</span></td>
+                                <td>{{prof.name}}</td>
+                                <td>{{prof.email}}</td>
+                                <td>{{prof.mobile}}</td>
+                                <td><span class="badge bg-success">{{prof.status}}</span></td>
                                 <td>
-                                    <button class="btn btn-sm btn-primary">View</button>
+                                    <a href="/view-professional/{{prof.id}}" class="btn btn-sm btn-primary">View</a>
                                     <button class="btn btn-sm btn-danger">Flag</button>
                                 </td>
                             </tr>
+                            {% endif %}
+                            {% endfor %}
 
                         </tbody>
                     </table>
@@ -113,17 +117,21 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% for prof in professionals %}
+                            {% if prof.status == 'Registered' %}
                             <tr>
-                                <td>Jane Doe</td>
-                                <td>jane@example.com</td>
-                                <td>098-765-4321</td>
-                                <td><span class="badge bg-success">Registered</span></td>
+                                <td>{{prof.name}}</td>
+                                <td>{{prof.email}}</td>
+                                <td>{{prof.mobile}}</td>
+                                <td><span class="badge bg-success">{{prof.status}}</span></td>
                                 <td>
                                     <button class="btn btn-sm btn-primary">View</button>
                                     <button class="btn btn-sm btn-success">Approve</button>
                                     <button class="btn btn-sm btn-danger">Reject</button>
                                 </td>
                             </tr>
+                            {% endif %}
+                            {% endfor %}
 
                         </tbody>
                     </table>
@@ -141,16 +149,20 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% for prof in professionals %}
+                            {% if prof.status == 'Flagged' %}
                             <tr>
-                                <td>Josh</td>
-                                <td>josh@example.com</td>
-                                <td>123-456-7890</td>
-                                <td><span class="badge bg-danger">Flagged</span></td>
+                                <td>{{prof.name}}</td>
+                                <td>{{prof.email}}</td>
+                                <td>{{prof.mobile}}</td>
+                                <td><span class="badge bg-danger">{{prof.status}}</span></td>
                                 <td>
 
                                     <button class="btn btn-sm btn-warning">UnFlag</button>
                                 </td>
                             </tr>
+                            {% endif %}
+                            {% endfor %}
 
                         </tbody>
                     </table>
@@ -194,17 +206,20 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% for cust in customers %}
+                            {% if cust.status == 'Active' %}
                             <tr>
-                                <td>Cust1</td>
-                                <td>cust1@example.com</td>
-                                <td>123-456-7890</td>
-                                <td><span class="badge bg-success">Active</span></td>
+                                <td>{{cust.name}}</td>
+                                <td>{{cust.email}}</td>
+                                <td>{{cust.mobile}}</td>
+                                <td><span class="badge bg-success">{{cust.status}}</span></td>
                                 <td>
                                     <button class="btn btn-sm btn-primary">View</button>
                                     <button class="btn btn-sm btn-warning">UnFlag</button>
                                 </td>
                             </tr>
-
+                            {% endif %}
+                            {% endfor %}
                         </tbody>
                     </table>
 
@@ -224,16 +239,20 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% for cust in customers %}
+                            {% if cust.status == 'Flagged' %}
                             <tr>
-                                <td>Cust2</td>
-                                <td>cust2@example.com</td>
-                                <td>098-765-4321</td>
-                                <td><span class="badge bg-warning">Flagged</span></td>
+                                <td>{{cust.name}}</td>
+                                <td>{{cust.email}}</td>
+                                <td>{{cust.mobile}}</td>
+                                <td><span class="badge bg-warning">{{cust.status}}</span></td>
                                 <td>
                                     
                                     <button class="btn btn-sm btn-danger">Flag</button>
                                 </td>
                             </tr>
+                            {% endif %}
+                            {% endfor %}
 
                         </tbody>
                     </table>

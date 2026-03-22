@@ -48,8 +48,8 @@
     <div class="card ms-4 mt-4 me-4">
         <div class="card-body">
             <h5 class="card-title">Professional Details</h5>
-            <p class="card-text"><strong>Name:</strong> John Doe</p>
-            <p class="card-text"><strong>Email:</strong>john@g.com </p>
+            <p class="card-text"><strong>Name:</strong> {{prof.name}}</p>
+            <p class="card-text"><strong>Email:</strong>{{prof.email}} </p>
         </div>
     </div>
 
@@ -81,69 +81,19 @@
                     aria-labelledby="pills-approved-package-tab" tabindex="0">
 
                     <div class="row">
+                        {% for package in packages %}
+                        {% if package.status == 'Approved' %}
                         <div class="col-3 mb-3">
                             <div class="card">
                                 <div class="card-body">
-                                    Pack1
-                                    <p class="card-text"><strong>Description:</strong> This is a sample package.</p>
-                                    <button> View Details</button>
+                                    {{package.title}}
+                                    <p class="card-text"><strong>Description:</strong> {{package.description}}.</p>
+                                    <button class="btn btn-primary"> View Details</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    Pack2
-                                    <p class="card-text"><strong>Description:</strong> This is a sample package.</p>
-                                    <button> View Details</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    Pack3
-                                    <p class="card-text"><strong>Description:</strong> This is a sample package.</p>
-                                    <button> View Details</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    Pack3
-                                    <p class="card-text"><strong>Description:</strong> This is a sample package.</p>
-                                    <button> View Details</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    Pack3
-                                    <p class="card-text"><strong>Description:</strong> This is a sample package.</p>
-                                    <button> View Details</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    Pack3
-                                    <p class="card-text"><strong>Description:</strong> This is a sample package.</p>
-                                    <button> View Details</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    Pack3
-                                    <p class="card-text"><strong>Description:</strong> This is a sample package.</p>
-                                    <button> View Details</button>
-                                </div>
-                            </div>
-                        </div>
+                        {% endif%}
+                        {% endfor %}
                     </div>
 
 
@@ -153,70 +103,22 @@
                     aria-labelledby="pills-pending-package-tab" tabindex="0">
 
                     <div class="row">
+                        {% for package in packages %}
+                        {% if package.status == 'Pending' %}
                         <div class="col-3 mb-3">
                             <div class="card">
                                 <div class="card-body">
-                                    Pack1
-                                    <p class="card-text"><strong>Description:</strong> This is a sample package.</p>
+                                    {{package.title}}
+                                    <p class="card-text"><strong>Description:</strong> {{package.description}}.</p>
                                     <button class="btn btn-success" >Approve</button>
                                     <button class="btn btn-danger" >Reject</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    Pack2
-                                    <p class="card-text"><strong>Description:</strong> This is a sample package.</p>
-                                    <button> View Details</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    Pack3
-                                    <p class="card-text"><strong>Description:</strong> This is a sample package.</p>
-                                    <button> View Details</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    Pack3
-                                    <p class="card-text"><strong>Description:</strong> This is a sample package.</p>
-                                    <button> View Details</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    Pack3
-                                    <p class="card-text"><strong>Description:</strong> This is a sample package.</p>
-                                    <button> View Details</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    Pack3
-                                    <p class="card-text"><strong>Description:</strong> This is a sample package.</p>
-                                    <button> View Details</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    Pack3
-                                    <p class="card-text"><strong>Description:</strong> This is a sample package.</p>
-                                    <button> View Details</button>
-                                </div>
-                            </div>
-                        </div>
+                        {% endif%}
+                        {% endfor %}
+                        
+                        
                     </div>
 
 
