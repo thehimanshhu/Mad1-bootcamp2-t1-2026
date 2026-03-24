@@ -140,8 +140,8 @@ def customer_dashboard():
 @app.route("/professional/dashboard" , methods=["GET","POST"]) 
 @login_required
 def professional_dashboard():
-    
-    return render_template("professional/dashboard.html" , current_user=current_user)
+    packs  = current_user.packages
+    return render_template("professional/dashboard.html" , current_user=current_user , packs= packs)
 
 
 @app.route("/professional/search" , methods=["GET" ,"POST"]) 
@@ -158,5 +158,103 @@ def view_professional(id):
     return render_template( "/admin/view-professional.html" , prof = prof , packages = packages)
 
 
+@app.route("/view-customer/<int:id>" , methods=["GET" , "POST"])
+@login_required
+def view_customer(id):
+    cust = db.session.query(Customer).filter_by(id = id).first()
+    # packages = prof.packages
+    bookings = cust.created_bookings
+    return render_template( "/admin/view-customer.html" , cust= cust , bookings = bookings)
 
 
+@app.route("/admin/professional/<string:action>/<int:id>" )
+def admin_action_on_professional(action , id):
+    prof = db.session.query(Professional ).filter_by(id = id).first()
+    if action=="active" and prof.status =="Registered"  :
+        prof.status = "Active"
+        db.session.commit()
+    elif action == "reject" and prof.status=="Registered" :
+        prof.status = "Rejected"
+        db.session.commit()
+    elif action == "flag" and prof.status=="Active":
+        prof.status = "Flagged"
+        db.session.commit()
+    elif action == "unflag" and prof.status=="Flagged":
+        prof.status = "Active"
+        db.session.commit()
+    else : 
+        return "Wrong action"
+
+    return redirect("/admin/dashboard")
+
+
+
+@app.route("/admin/customer/<string:action>/<int:id>" )
+def admin_action_on_customer(action , id):
+    cust = db.session.query(Customer ).filter_by(id = id).first()
+   
+    if action == "flag" and cust.status=="Active":
+        cust.status = "Flagged"
+        db.session.commit()
+    elif action == "unflag" and cust.status=="Flagged":
+        cust.status = "Active"
+        db.session.commit()
+    else : 
+        return "Wrong action"
+
+    return redirect("/admin/dashboard")
+
+@app.route("/professional/create-package" , methods=["GET" , "POST"])
+def create_package():
+    if request.method=="GET":
+        return render_template("professional/create-package.html")
+    elif request.method=="POST":
+        name = request.form.get("pack_name")
+        desc = request.form.get("pack_desc")
+        price = request.form.get("pack_price")
+
+        new_pack = Package(title = name , description=desc , total_price = price , status= "Pending" , prof_id =current_user.id)
+        db.session.add(new_pack)
+        db.session.commit()
+        return redirect("/professional/dashboard")
+    
+@app.route("/professional/edit-package/<int:id>" , methods=["GET" , "POST"])
+def edit_package(id):
+    if request.method=="GET":
+        pack = db.session.query(Package).filter_by(id = id).first()
+        return render_template("professional/edit-package.html" , pack=pack)
+    elif request.method=="POST":
+        name = request.form.get("pack_name")
+        desc = request.form.get("pack_desc")
+        price = request.form.get("pack_price")
+
+        pack = db.session.query(Package).filter_by(id = id).first()
+        if name :
+            pack.title = name
+        if desc:
+            pack.description=desc
+        if price:
+            pack.total_price = price
+
+        db.session.commit()
+        return redirect("/professional/dashboard")
+    
+@app.route("/admin/package/<string:action>/<int:id>")
+def admin_action_on_package(action,id):
+    pack = db.session.query(Package).filter_by(id = id).first()
+    if action=="approve" and pack.status =="Pending":
+        pack.status="Approved"
+    elif action =="reject" and pack.status=="Pending":
+        pack.status ="Rejected"
+    db.session.commit()
+    return redirect("/admin/dashboard")
+
+
+@app.route("/package-details/<int:id>" , methods= ["GET" , "POST"])
+def package_details(id):
+    pack = db.session.query(Package).filter_by(id = id).first()
+    if isinstance(current_user,Admin):
+        return render_template("admin/package-details.html", pack=pack)
+    elif isinstance(current_user , Professional):
+        return render_template("professional/package-details.html" , pack=pack)
+    return "Access Denied"

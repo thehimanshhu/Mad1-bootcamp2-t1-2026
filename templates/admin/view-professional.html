@@ -88,7 +88,7 @@
                                 <div class="card-body">
                                     {{package.title}}
                                     <p class="card-text"><strong>Description:</strong> {{package.description}}.</p>
-                                    <button class="btn btn-primary"> View Details</button>
+                                    <a href="/package-details/{{package.id}}"  class="btn btn-primary"> View Details</a>
                                 </div>
                             </div>
                         </div>
@@ -110,8 +110,8 @@
                                 <div class="card-body">
                                     {{package.title}}
                                     <p class="card-text"><strong>Description:</strong> {{package.description}}.</p>
-                                    <button class="btn btn-success" >Approve</button>
-                                    <button class="btn btn-danger" >Reject</button>
+                                    <a href="/admin/package/approve/{{package.id}}" class="btn btn-success" >Approve</a>
+                                    <a href="/admin/package/reject/{{package.id}}" class="btn btn-danger" >Reject</a>
                                 </div>
                             </div>
                         </div>
@@ -126,7 +126,19 @@
                 </div>
                 <div class="tab-pane fade" id="pills-completed-rejected" role="tabpanel"
                     aria-labelledby="pills-completed-rejected-tab" tabindex="0">
-
+                    {% for package in packages %}
+                        {% if package.status == 'Rejected' %}
+                        <div class="col-3 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    {{package.title}}
+                                    <p class="card-text"><strong>Description:</strong> {{package.description}}.</p>
+                                  
+                                </div>
+                            </div>
+                        </div>
+                        {% endif%}
+                        {% endfor %}
                 </div>
 
             </div>

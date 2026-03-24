@@ -49,19 +49,19 @@
         <div class="card mt-5 "  style="width:25rem">
         <div class="card-body">
             <h5 class="card-title">Create Package</h5>
-            <form>
+            <form method="POST" action="/professional/create-package">
                 <div class="mb-3">
                     <label for="packageName" class="form-label">Package Name</label>
-                    <input type="text" class="form-control" id="packageName" placeholder="Enter package name">
+                    <input type="text" class="form-control" id="packageName" name = "pack_name" placeholder="Enter package name">
                 </div>
                 <div class="mb-3">
                     <label for="packageDescription" class="form-label">Package Description</label>
-                    <textarea class="form-control" id="packageDescription" rows="3"
+                    <textarea class="form-control" id="packageDescription" name = "pack_desc" rows="3"
                         placeholder="Enter package description"></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="packagePrice" class="form-label">Price</label>
-                    <input type="text" class="form-control" id="packagePrice" placeholder="Enter package price">
+                    <input type="text" class="form-control" id="packagePrice" name="pack_price" placeholder="Enter package price">
                 </div>
                 <button type="submit" class="btn btn-primary">Create Package</button>
             </form>

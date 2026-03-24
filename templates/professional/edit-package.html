@@ -49,21 +49,21 @@
         <div class="card mt-5 "  style="width:25rem">
         <div class="card-body">
             <h5 class="card-title">Edit Package</h5>
-            <form>
+            <form method="POST" action="/professional/edit-package/{{pack.id}}" >
                 <div class="mb-3">
                     <label for="packageName" class="form-label">Package Name</label>
-                    <input type="text" class="form-control" id="packageName" placeholder="Enter package name">
+                    <input value="{{pack.title}}" type="text" class="form-control" name = "pack_name" id="packageName" placeholder="Enter package name">
                 </div>
                 <div class="mb-3">
                     <label for="packageDescription" class="form-label">Package Description</label>
-                    <textarea class="form-control" id="packageDescription" rows="3"
-                        placeholder="Enter package description"></textarea>
+                    <input value="{{pack.description}}" class="form-control" name="pack_desc"  id="packageDescription" rows="3"
+                        placeholder="Enter package description"></input>
                 </div>
                 <div class="mb-3">
                     <label for="packagePrice" class="form-label">Price</label>
-                    <input type="text" class="form-control" id="packagePrice" placeholder="Enter package price">
+                    <input value = {{pack.total_price}} type="text" class="form-control" name="pack_price" id="packagePrice" placeholder="Enter package price">
                 </div>
-                <button type="submit" class="btn btn-primary">Create Package</button>
+                <button type="submit" class="btn btn-primary">Edit Package</button>
             </form>
 
         </div>
