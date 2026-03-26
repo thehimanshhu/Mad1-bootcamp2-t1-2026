@@ -45,14 +45,43 @@
         </div>
     </nav>
 
-    <div class="card ms-4 mt-4 me-4">
+
+    <div class="card mt-4 ms-4 me-4 shadow-lg">
+        <div class="card-header">
+            <h3>Professionals</h3>
+        </div>
         <div class="card-body">
-            <h5 class="card-title">Package Details</h5>
-            <p class="card-text"><strong>Name:</strong> Pack1</p>
-            <p class="card-text"><strong>Description:</strong> This is a sample package.</p>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Professional Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Mobile</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for prof in professionals %}
+                    {% if prof.status == 'Active' %}
+                    <tr>
+                        <td>{{prof.name}}</td>
+                        <td>{{prof.email}}</td>
+                        <td>{{prof.mobile}}</td>
+                        <td><span class="badge bg-success">{{prof.status}}</span></td>
+                        <td>
+                            <a href="/view-professional/{{prof.id}}" class="btn btn-sm btn-primary">View</a>
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+
+                </tbody>
+            </table>
+
         </div>
     </div>
-
     <div class="card mt-4 ms-4 me-4 shadow-lg">
         <div class="card-header">
             <h3>Bookings</h3>
@@ -82,22 +111,23 @@
                     <table class="table">
                         <thead>
                             <tr>
-                               <th scope="col">Customer Name</th>
+
+                                <th scope="col">Professional Name</th>
                                 <th scope="col">Package Name</th>
-                                <th scope="col">Customer email</th>
-                                <th scope="col">Customer mobile</th>
+                                <th scope="col">Professional email</th>
+                                <th scope="col">Professional mobile</th>
                                 <th scope="col">Status</th>
 
                             </tr>
                         </thead>
                         <tbody>
-                            {% for booking in current_user.recived_bookings %}
+                            {% for booking in current_user.created_bookings %}
                             {% if booking.status =="Approved" %}
-                           <tr>
-                                <td>{{booking.cust.name}}</td>
+                            <tr>
+                                <td>{{booking.prof.name}}</td>
                                 <td>{{booking.pack.title}}</td>
-                                <td>{{booking.cust.email}}</td>
-                                <td>{{booking.cust.mobile}}</td>
+                                <td>{{booking.prof.email}}</td>
+                                <td>{{booking.prof.mobile}}</td>
 
                                 <td><span class="badge bg-success">{{booking.status}}</span></td>
                             </tr>
@@ -114,28 +144,24 @@
                     <table class="table">
                         <thead>
                             <tr>
-                               <th scope="col">Customer Name</th>
+                               <th scope="col">Professional Name</th>
                                 <th scope="col">Package Name</th>
-                                <th scope="col">Customer email</th>
-                                <th scope="col">Customer mobile</th>
+                                <th scope="col">Professional email</th>
+                                <th scope="col">Professional mobile</th>
                                 <th scope="col">Status</th>
 
                             </tr>
                         </thead>
                         <tbody>
-                            {% for booking in current_user.recived_bookings %}
+                            {% for booking in current_user.created_bookings %}
                             {% if booking.status =="Pending" %}
                             <tr>
-                                <td>{{booking.cust.name}}</td>
+                                <td>{{booking.prof.name}}</td>
                                 <td>{{booking.pack.title}}</td>
-                                <td>{{booking.cust.email}}</td>
-                                <td>{{booking.cust.mobile}}</td>
+                                <td>{{booking.prof.email}}</td>
+                                <td>{{booking.prof.mobile}}</td>
 
-                                <td>
-                                    <span class="badge bg-success">{{booking.status}}</span>
-                                    <a class="btn btn-primary btn-sm" href="/professional/booking/approve/{{booking.id}}">Accept</a>
-                                    <a class="btn btn-warning btn-sm" href="/professional/booking/reject/{{booking.id}}">Reject</a>
-                                </td>
+                                <td><span class="badge bg-success">{{booking.status}}</span></td>
                             </tr>
                             {% endif %}
                             {% endfor %}
@@ -150,20 +176,20 @@
                     aria-labelledby="pills-completed-rejected-tab" tabindex="0">
                     <table class="table">
                         <thead>
-                           <th scope="col">Customer Name</th>
+                          <th scope="col">Professional Name</th>
                                 <th scope="col">Package Name</th>
-                                <th scope="col">Customer email</th>
-                                <th scope="col">Customer mobile</th>
+                                <th scope="col">Professional email</th>
+                                <th scope="col">Professional mobile</th>
                                 <th scope="col">Status</th>
                         </thead>
                         <tbody>
-                           {% for booking in current_user.recived_bookings %}
+                           {% for booking in current_user.created_bookings %}
                             {% if booking.status =="Rejected" or booking.status=="Completed" %}
-                           <tr>
-                                <td>{{booking.cust.name}}</td>
+                            <tr>
+                                <td>{{booking.prof.name}}</td>
                                 <td>{{booking.pack.title}}</td>
-                                <td>{{booking.cust.email}}</td>
-                                <td>{{booking.cust.mobile}}</td>
+                                <td>{{booking.prof.email}}</td>
+                                <td>{{booking.prof.mobile}}</td>
 
                                 <td><span class="badge bg-success">{{booking.status}}</span></td>
                             </tr>
@@ -180,6 +206,7 @@
 
         </div>
     </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"

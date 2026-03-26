@@ -1,6 +1,6 @@
 from app  import app
 from .model import db  , Admin, Customer,Professional,Package,Booking
-
+from datetime import datetime
 from flask_login import login_user , login_required , current_user
 
 from flask import render_template , request ,redirect 
@@ -48,6 +48,8 @@ def register(utype):
             name = request.form.get("prof_name")
             mobile = request.form.get("prof_mobile")
             address = request.form.get("prof_address")
+            resume = request.files.get("prof_resume")
+            
             if not email or not password or not name or not mobile or not address :
                 return "please fill the form properly"
             
@@ -59,8 +61,8 @@ def register(utype):
                         <h1>User already exist</h1>
                         <a href="/login" >Go to login </a>
                         '''
-        
-            new_user= Professional(name=name , email=email , password=password , mobile=mobile , address=address , status="Registered" , resume="default_resume.pdf")
+            resume.save(f"./static/{email}.pdf")
+            new_user= Professional(name=name ,resume= f"/static/{email}.pdf" , email=email , password=password , mobile=mobile , address=address , status="Registered")
             db.session.add(new_user)
             db.session.commit()
             return redirect("/login")
@@ -134,7 +136,8 @@ def admin_dashboard():
 @app.route("/customer/dashboard" , methods=["GET","POST"]) 
 @login_required
 def customer_dashboard():
-    return f"welcome {current_user.email} to customer dashbaord" 
+    profs = db.session.query(Professional).filter_by(status="Active").all()
+    return render_template("/customer/dashboard.html" , professionals=profs , current_user = current_user)
 
 
 @app.route("/professional/dashboard" , methods=["GET","POST"]) 
@@ -153,10 +156,35 @@ def prof_search():
 @app.route("/view-professional/<int:id>" , methods=["GET" , "POST"])
 @login_required
 def view_professional(id):
+    
     prof = db.session.query(Professional).filter_by(id = id).first()
     packages = prof.packages
-    return render_template( "/admin/view-professional.html" , prof = prof , packages = packages)
+    if isinstance(current_user, Admin):
+        return render_template( "/admin/view-professional.html" , prof = prof , packages = packages)
+    elif isinstance(current_user , Customer):
+        return render_template("/customer/view-professional.html" , prof=prof , packages = packages)
+    
 
+@app.route("/book/<int:packid>" , methods=["GET" , "POST"])
+@login_required
+def book_package(packid):
+    if request.method=="GET" : 
+        # existing_booking = db.session.query(Booking).filter(Booking.customer_id == current_user.id , Booking.package_id == packid).first()
+        # if existing_booking : 
+        #     return "already booked"
+        return render_template("customer/booking.html" , id = packid)
+    elif request.method=="POST":
+        print(type(request.form.get("book_date")))
+        d = datetime.strptime(request.form.get("book_date") , "%Y-%m-%d").date()
+        
+        t = datetime.strptime(request.form.get("book_time") , "%H:%M").time()
+        
+        package = db.session.query(Package).filter_by(id = packid).first()
+        book = Booking(date = d , start_time = t , status = "Pending" , package_id = packid , customer_id = current_user.id , professional= package.prof_id)
+        db.session.add(book)
+        db.session.commit()
+        return redirect("/customer/dashboard")
+    
 
 @app.route("/view-customer/<int:id>" , methods=["GET" , "POST"])
 @login_required
@@ -256,5 +284,20 @@ def package_details(id):
     if isinstance(current_user,Admin):
         return render_template("admin/package-details.html", pack=pack)
     elif isinstance(current_user , Professional):
-        return render_template("professional/package-details.html" , pack=pack)
+        
+        return render_template("professional/package-details.html" , pack=pack , current_user=current_user)
     return "Access Denied"
+
+
+@app.route("/professional/booking/<string:action>/<int:id>")
+def professional_action_on_booking(action , id):
+    booking = db.session.query(Booking).filter_by(id = id).first()
+    if action=="approve" and booking.status =="Pending":
+        booking.status="Approved"
+    elif action =="reject" and booking.status=="Pending":
+        booking.status ="Rejected"
+    elif action =="complete" and booking.status=="Approved":
+        booking.end_time = datetime.now().time()
+        booking.status="Completed"
+    db.session.commit()
+    return redirect("/professional/dashboard")

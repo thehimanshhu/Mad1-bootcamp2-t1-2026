@@ -125,7 +125,7 @@
                                 <td>{{prof.mobile}}</td>
                                 <td><span class="badge bg-success">{{prof.status}}</span></td>
                                 <td>
-                                    
+                                    <a href="http://127.0.0.1:5000{{prof.resume}}"  class="btn btn-primary" target="_blank">ViewResume</a>
                                     <a href="/admin/professional/active/{{prof.id}}" class="btn btn-sm btn-success">Approve</a>
                                     <a  href="/admin/professional/reject/{{prof.id}}" class="btn btn-sm btn-danger">Reject</a>
                                 </td>
@@ -214,6 +214,8 @@
                                 <td>{{cust.mobile}}</td>
                                 <td><span class="badge bg-success">{{cust.status}}</span></td>
                                 <td>
+                                    
+                                    
                                     <a href="/view-customer/{{cust.id}}" class="btn btn-sm btn-primary">View</a>
                                     <a  href="/admin/customer/flag/{{cust.id}}" class="btn btn-sm btn-warning">Flag</a>
                                 </td>
