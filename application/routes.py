@@ -1,7 +1,7 @@
 from app  import app
 from .model import db  , Admin, Customer,Professional,Package,Booking
 from datetime import datetime
-from flask_login import login_user , login_required , current_user
+from flask_login import login_user , login_required , current_user ,logout_user
 
 from flask import render_template , request ,redirect 
 
@@ -78,18 +78,31 @@ def login():
         user = db.session.query(Professional).filter_by(email=email).first() or \
                  db.session.query(Customer).filter_by(email=email).first() or\
                  db.session.query(Admin).filter_by(email=email).first()
+        if not user:
+            return "email doesn't exist"
         if  isinstance(user,Professional):
             if user.password == password:
+                if user.status=="Registered":
+                    return "Your application is pending for admins approval . please wait"
+                elif user.status=="Flagged":
+                    return "You have been flagged by admin. please contact admin"
                 login_user(user)
                 return redirect(f"/professional/dashboard")
+            else:
+                return "Check password"
+            
         elif isinstance(user,Customer):
             if user.password == password:
                 login_user(user)
                 return redirect(f"/customer/dashboard")
+            else: 
+                return "check password"
         elif isinstance(user,Admin):
             if user.password == password:
                 login_user(user)
                 return redirect("/admin/dashboard") 
+            else:
+                return "check password"
 
 
 
@@ -301,3 +314,29 @@ def professional_action_on_booking(action , id):
         booking.status="Completed"
     db.session.commit()
     return redirect("/professional/dashboard")
+
+
+@app.route("/admin/search" , methods=["GET" , "POST"])
+def admin_search():
+    if request.method=="GET": 
+        return render_template("admin/search.html")
+    elif request.method=="POST":
+        search_query = request.form.get("search_query")
+        query_type = request.form.get("query_type")
+        if query_type =="professional":
+            profs = db.session.query(Professional).filter(Professional.name.contains(search_query)).all()
+            
+            return render_template("admin/search.html" , professionals= profs , qt = query_type )
+        elif query_type =="customer":
+            custs = db.session.query(Customer).filter(Customer.name.contains(search_query)).all()
+            
+            return render_template("admin/search.html" , customers= custs , qt = query_type )
+        else:
+            return "Wrong query type"
+        
+
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect("/")
