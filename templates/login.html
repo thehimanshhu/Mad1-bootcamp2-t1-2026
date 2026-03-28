@@ -14,6 +14,15 @@
         <div class="card shadow-lg" style="width: 18rem;">
 
             <div class="card-body">
+                {% with msgs = get_flashed_messages() %}
+                {% if msgs %}
+                    {% for msg in msgs %}
+                    <div class="alert alert-danger" role="alert">
+                        {{msg}}
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                {% endwith %}
                 <form method="POST" action="/login">
                     <div class="form-floating mb-3">
                         <input type="email" class="form-control" id="floatingInput" name="email"

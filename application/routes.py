@@ -3,7 +3,7 @@ from .model import db  , Admin, Customer,Professional,Package,Booking
 from datetime import datetime
 from flask_login import login_user , login_required , current_user ,logout_user
 
-from flask import render_template , request ,redirect 
+from flask import render_template , request ,redirect ,flash
 
 @app.route("/")
 def home():
@@ -83,7 +83,8 @@ def login():
         if  isinstance(user,Professional):
             if user.password == password:
                 if user.status=="Registered":
-                    return "Your application is pending for admins approval . please wait"
+                    flash("Your application is pending for admins approval . please wait")
+                    return redirect("/login")
                 elif user.status=="Flagged":
                     return "You have been flagged by admin. please contact admin"
                 login_user(user)
